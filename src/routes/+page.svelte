@@ -8,8 +8,11 @@
 <div class="flex flex-col items-center">
   {#each game.grid as row}
     <div>
-    {#each row as _}
-      <div class="inline-block h-10 w-10 border border-black">&nbsp;</div>
+    {#each row as cell}
+      <div class="inline-block h-10 w-10 border border-black
+          {cell === null ? '' : 'bg-green-900'}">
+        &nbsp;
+      </div>
     {/each}
     </div>
   {/each}
