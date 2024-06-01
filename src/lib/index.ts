@@ -1,31 +1,18 @@
-type PieceType = "normal";
-type Pos = { x: number, y: number };
-type Piece = { pieceType: PieceType; cells: Pos[]; };
-type GameState = { grid: (PieceType | null)[][], piece: Piece };
+import { Tetromino, TetrominoT, Shape, Orientation } from "$lib/tetromino";
+
+type GameState = { grid: (Shape | null)[][], tetromino: Tetromino };
 
 export function init(): GameState {
   const rows = 16;
   const cols = 16;
-  const grid = Array<Array<PieceType | null>>(rows);
+  const grid = Array<Array<Shape | null>>(rows);
   for (let i = 0; i < rows; i++) {
     grid[i] = Array<null>(cols).fill(null);
   }
-  const piece = newPiece();
-  piece.cells.forEach(pos => {
-    grid[pos.y][pos.x] = piece.pieceType;
+  const tetromino = new TetrominoT({ x: 4, y: 3 }, Orientation.RIGHT) 
+  tetromino.cells.forEach(pos => {
+    grid[pos.y][pos.x] = tetromino.shape;
   });
 
-  return { grid: grid, piece: piece };
-}
-
-function randomPieceType(): PieceType {
-  return "normal";
-}
-
-function newPiece(): Piece {
-  return {
-    pieceType: randomPieceType(),
-    cells: [{x: 1, y: 2}, {x: 2, y: 2}, {x: 2, y: 1}, {x: 2, y: 3}]
-  }
-}
+  return { grid: grid, tetromino: tetromino };
 }
