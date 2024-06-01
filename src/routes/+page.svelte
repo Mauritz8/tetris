@@ -4,8 +4,7 @@
   let game = init();
 </script>
 
-<h1>PieceType: { game.piece.pieceType }</h1>
-<div class="flex flex-col items-center">
+<div class="flex flex-col items-center h-screen justify-center">
   {#each game.grid as row}
     <div>
     {#each row as cell}
