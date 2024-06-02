@@ -28,3 +28,39 @@ export function rotateTetromito(gameState: GameState): void {
     gameState.grid[pos.y][pos.x] = gameState.tetromino.shape;
   });
 }
+
+export function moveTetromitoRight(gameState: GameState): void {
+  gameState.tetromino.cells.forEach(pos => {
+    gameState.grid[pos.y][pos.x] = null;
+  });
+
+  gameState.tetromino.moveRight(); 
+
+  gameState.tetromino.cells.forEach(pos => {
+    gameState.grid[pos.y][pos.x] = gameState.tetromino.shape;
+  });
+}
+
+export function moveTetromitoLeft(gameState: GameState): void {
+  gameState.tetromino.cells.forEach(pos => {
+    gameState.grid[pos.y][pos.x] = null;
+  });
+
+  gameState.tetromino.moveLeft(); 
+
+  gameState.tetromino.cells.forEach(pos => {
+    gameState.grid[pos.y][pos.x] = gameState.tetromino.shape;
+  });
+}
+
+export function moveTetromitoDown(gameState: GameState): void {
+  gameState.tetromino.cells.forEach(pos => {
+    gameState.grid[pos.y][pos.x] = null;
+  });
+
+  gameState.tetromino.moveDown(); 
+
+  gameState.tetromino.cells.forEach(pos => {
+    gameState.grid[pos.y][pos.x] = gameState.tetromino.shape;
+  });
+}

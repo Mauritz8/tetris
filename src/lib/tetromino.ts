@@ -53,6 +53,17 @@ export abstract class Tetromino {
         break;
     }
   }
+
+  moveBy(x: number, y: number): void {
+    this.pos = { x: this.pos.x + x, y: this.pos.y + y };
+    this.cells = this.cells.map(pos => {
+      return { x: pos.x + x, y: pos.y + y };
+    });
+  }
+
+  moveRight = () => this.moveBy(1, 0);
+  moveLeft = () => this.moveBy(-1, 0);
+  moveDown = () => this.moveBy(0, +1);
 }
 
 export class TetrominoT extends Tetromino {

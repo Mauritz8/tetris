@@ -1,5 +1,6 @@
 <script>
-  import { init, rotateTetromito } from "$lib/index.ts"
+  import { init, rotateTetromito, moveTetromitoRight, moveTetromitoLeft,
+  moveTetromitoDown } from "$lib/index.ts"
 
   let game = init();
 
@@ -7,8 +8,18 @@
     switch (e.key) {
       case "ArrowUp":
         rotateTetromito(game);
-        game = game;
+        break;
+      case "ArrowRight":
+        moveTetromitoRight(game);
+        break;
+      case "ArrowLeft":
+        moveTetromitoLeft(game);
+        break;
+      case "ArrowDown":
+        moveTetromitoDown(game);
+        break;
     }
+    game = game;
   }
 </script>
 
