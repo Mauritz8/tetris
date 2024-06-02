@@ -1,24 +1,27 @@
 <script>
-  import { init, rotateTetromito, moveTetromitoRight, moveTetromitoLeft,
-  moveTetromitoDown } from "$lib/index.ts"
+  import { init, updatePiece, rotate, moveRight, moveLeft, moveDown } from "$lib/index.ts"
 
   let game = init();
 
   function onKeyDown(e) {
+    let f;
     switch (e.key) {
       case "ArrowUp":
-        rotateTetromito(game);
+        f = rotate(game.piece);
         break;
       case "ArrowRight":
-        moveTetromitoRight(game);
+        f = moveRight(game.piece);
         break;
       case "ArrowLeft":
-        moveTetromitoLeft(game);
+        f = moveLeft(game.piece);
         break;
       case "ArrowDown":
-        moveTetromitoDown(game);
+        f = moveDown(game.piece);
         break;
+      default:
+        return;
     }
+    updatePiece(game, f);
     game = game;
   }
 </script>
