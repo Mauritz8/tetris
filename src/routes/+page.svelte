@@ -1,5 +1,6 @@
 <script>
-  import { init, updatePiece, rotate, moveRight, moveLeft, moveDown } from "$lib/index.ts"
+  import { init, updatePiece } from "$lib/index.ts";
+  import { rotate, moveRight, moveLeft, moveDown } from "$lib/piece.ts";
 
   let game = init();
 

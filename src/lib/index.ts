@@ -1,4 +1,4 @@
-import { Piece, Shape, Orientation } from "$lib/tetromino";
+import { Piece, Shape, Orientation } from "$lib/piece";
 
 type GameState = { grid: (Shape | null)[][], piece: Piece };
 
@@ -16,51 +16,6 @@ export function init(): GameState {
 
   return { grid: grid, piece: piece };
 }
-
-export function rotate(p: Piece): Piece {
-  switch (p.orientation) {
-    case Orientation.UP:
-      return {
-        ...p,
-        orientation: Orientation.RIGHT,
-        cells: p.tetromino.orientationRight(p.pos)
-      };
-    case Orientation.RIGHT:
-      return {
-        ...p,
-        orientation: Orientation.DOWN,
-        cells: p.tetromino.orientationDown(p.pos)
-      };
-    case Orientation.DOWN:
-      return {
-        ...p,
-        orientation: Orientation.LEFT,
-        cells: p.tetromino.orientationLeft(p.pos)
-      };
-    case Orientation.LEFT:
-      return {
-        ...p,
-        orientation: Orientation.UP,
-        cells: p.tetromino.orientationUp(p.pos)
-      };
-  }
-}
-
-function moveBy(p: Piece, x: number, y: number): Piece {
-  return {
-    ...p,
-    pos: { x: p.pos.x + x, y: p.pos.y + y },
-    cells: p.cells.map(pos => {
-      return { x: pos.x + x, y: pos.y + y };
-    })
-  };
-}
-
-
-export const moveRight = (p: Piece) => moveBy(p, 1, 0);
-export const moveLeft = (p: Piece) => moveBy(p, -1, 0);
-export const moveDown = (p: Piece) => moveBy(p, 0, +1);
-
 
 export function updatePiece(gameState: GameState, piece: Piece): void {
   gameState.piece.cells.forEach(pos => {
