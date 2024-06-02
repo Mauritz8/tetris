@@ -25,6 +25,11 @@
     updatePiece(game, f);
     game = game;
   }
+
+  setInterval(() => {
+    updatePiece(game, moveDown(game.piece));
+    game = game;
+  }, 1000);
 </script>
 
 <div class="flex flex-col items-center h-screen justify-center">
