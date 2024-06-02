@@ -1,6 +1,8 @@
-type Pos = { x: number, y: number };
+import type { Tetromino } from "./tetromino";
+import { Shape, TetrominoT } from "./tetromino";
+
+export type Pos = { x: number, y: number };
 export enum Orientation { UP, DOWN, RIGHT, LEFT };
-export enum Shape { T };
 export type Piece = {
   pos: Pos;
   orientation: Orientation;
@@ -82,51 +84,3 @@ function moveBy(p: Piece, x: number, y: number): Piece {
 export const moveRight = (p: Piece) => moveBy(p, 1, 0);
 export const moveLeft = (p: Piece) => moveBy(p, -1, 0);
 export const moveDown = (p: Piece) => moveBy(p, 0, +1);
-
-interface Tetromino {
-  shape: Shape;
-  orientationUp: (pos: Pos) => Pos[];
-  orientationDown: (pos: Pos) => Pos[];
-  orientationRight: (pos: Pos) => Pos[];
-  orientationLeft: (pos: Pos) => Pos[];
-}
-
-const TetrominoT: Tetromino = {
-  shape: Shape.T,
-
-  orientationUp: (pos: Pos): Pos[] => {
-    return [
-      { x: pos.x, y: pos.y },
-      { x: pos.x - 1, y: pos.y },
-      { x: pos.x + 1, y: pos.y },
-      { x: pos.x, y: pos.y - 1 }
-    ];
-  },
-
-  orientationDown: (pos: Pos): Pos[] => {
-    return [
-      { x: pos.x, y: pos.y },
-      { x: pos.x - 1, y: pos.y },
-      { x: pos.x + 1, y: pos.y },
-      { x: pos.x, y: pos.y + 1 }
-    ];
-  },
-
-  orientationRight: (pos: Pos): Pos[] => {
-    return [
-      { x: pos.x, y: pos.y },
-      { x: pos.x, y: pos.y - 1 },
-      { x: pos.x, y: pos.y + 1 },
-      { x: pos.x + 1, y: pos.y }
-    ];
-  },
-
-  orientationLeft: (pos: Pos): Pos[] => {
-    return [
-      { x: pos.x, y: pos.y },
-      { x: pos.x, y: pos.y - 1 },
-      { x: pos.x, y: pos.y + 1 },
-      { x: pos.x - 1, y: pos.y }
-    ];
-  }
-};

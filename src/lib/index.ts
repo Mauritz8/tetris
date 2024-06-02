@@ -1,5 +1,6 @@
-import { Shape, Orientation, createPiece } from "$lib/piece";
+import { Orientation, createPiece } from "$lib/piece";
 import type { Piece } from "$lib/piece";
+import { Shape } from "$lib/tetromino";
 
 type GameState = { grid: (Shape | null)[][], piece: Piece };
 
