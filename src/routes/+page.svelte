@@ -1,7 +1,15 @@
 <script>
-  import { init } from "$lib/index.ts"
+  import { init, rotateTetromito } from "$lib/index.ts"
 
   let game = init();
+
+  function onKeyDown(e) {
+    switch (e.key) {
+      case "ArrowUp":
+        rotateTetromito(game);
+        game = game;
+    }
+  }
 </script>
 
 <div class="flex flex-col items-center h-screen justify-center">
@@ -16,3 +24,5 @@
     </div>
   {/each}
 </div>
+
+<svelte:window on:keydown={onKeyDown} />

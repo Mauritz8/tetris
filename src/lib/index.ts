@@ -16,3 +16,15 @@ export function init(): GameState {
 
   return { grid: grid, tetromino: tetromino };
 }
+
+export function rotateTetromito(gameState: GameState): void {
+  gameState.tetromino.cells.forEach(pos => {
+    gameState.grid[pos.y][pos.x] = null;
+  });
+
+  gameState.tetromino.rotate(); 
+
+  gameState.tetromino.cells.forEach(pos => {
+    gameState.grid[pos.y][pos.x] = gameState.tetromino.shape;
+  });
+}

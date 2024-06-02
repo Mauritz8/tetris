@@ -36,15 +36,19 @@ export abstract class Tetromino {
   rotate(): void {
     switch (this.orientation) {
       case Orientation.UP:
+        this.orientation = Orientation.RIGHT;
         this.cells = this.orientationRight(); 
         break;
       case Orientation.RIGHT:
+        this.orientation = Orientation.DOWN;
         this.cells = this.orientationDown(); 
         break;
       case Orientation.DOWN:
+        this.orientation = Orientation.LEFT;
         this.cells = this.orientationLeft(); 
         break;
       case Orientation.LEFT:
+        this.orientation = Orientation.UP;
         this.cells = this.orientationUp(); 
         break;
     }
