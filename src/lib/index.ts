@@ -1,4 +1,5 @@
-import { Piece, Shape, Orientation } from "$lib/piece";
+import { Shape, Orientation, createPiece } from "$lib/piece";
+import type { Piece } from "$lib/piece";
 
 type GameState = { grid: (Shape | null)[][], piece: Piece };
 
@@ -9,7 +10,7 @@ export function init(): GameState {
   for (let i = 0; i < rows; i++) {
     grid[i] = Array<null>(cols).fill(null);
   }
-  const piece = new Piece({ x: 4, y: 3 }, Orientation.RIGHT, Shape.T) 
+  const piece = createPiece({ x: 4, y: 3 }, Orientation.RIGHT, Shape.T) 
   piece.cells.forEach(pos => {
     grid[pos.y][pos.x] = piece.tetromino.shape;
   });

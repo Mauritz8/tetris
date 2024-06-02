@@ -1,37 +1,42 @@
 type Pos = { x: number, y: number };
 export enum Orientation { UP, DOWN, RIGHT, LEFT };
 export enum Shape { T };
-
-
-export class Piece {
+export type Piece = {
   pos: Pos;
   orientation: Orientation;
   tetromino: Tetromino;
   cells: Pos[];
+};
 
-  constructor(pos: Pos, orientation: Orientation, shape: Shape) {
-    this.pos = pos;
-    this.orientation = orientation;
+export function createPiece(pos: Pos, orientation: Orientation, shape: Shape): Piece {
+    let tetromino: Tetromino;
     switch (shape) {
       case Shape.T:
-        this.tetromino = TetrominoT;
+        tetromino = TetrominoT;
     }
 
+    let cells: Pos[]; 
     switch (orientation) {
       case Orientation.UP:
-        this.cells = this.tetromino.orientationUp(pos);
+        cells = tetromino.orientationUp(pos);
         break;
       case Orientation.DOWN:
-        this.cells = this.tetromino.orientationDown(pos);
+        cells = tetromino.orientationDown(pos);
         break;
       case Orientation.RIGHT:
-        this.cells = this.tetromino.orientationRight(pos);
+        cells = tetromino.orientationRight(pos);
         break;
       case Orientation.LEFT:
-        this.cells = this.tetromino.orientationLeft(pos);
+        cells = tetromino.orientationLeft(pos);
         break;
     }
-  }
+
+    return {
+      pos: pos,
+      orientation: orientation,
+      tetromino: tetromino,
+      cells: cells
+    };
 }
 
 export function rotate(p: Piece): Piece {
