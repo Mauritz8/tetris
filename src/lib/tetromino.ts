@@ -1,51 +1,37 @@
 import type { Pos } from "./piece";
 
-export enum Shape { T };
+export enum Shape { I, T };
 
 export interface Tetromino {
   shape: Shape;
-  orientationUp: (pos: Pos) => Pos[];
-  orientationDown: (pos: Pos) => Pos[];
-  orientationRight: (pos: Pos) => Pos[];
-  orientationLeft: (pos: Pos) => Pos[];
+  cells: (pos: Pos) => Pos[];
+}
+
+export function getTetromino(shape: Shape): Tetromino {
+  switch (shape) {
+    case Shape.T:
+      return TetrominoT;
+    case Shape.I:
+      return TetrominoI
+  }
 }
 
 export const TetrominoT: Tetromino = {
-  shape: Shape.T,
+  shape: Shape.T, 
+  cells: (pos: Pos) => [
+    { x: pos.x, y: pos.y },
+    { x: pos.x - 1, y: pos.y },
+    { x: pos.x + 1, y: pos.y },
+    { x: pos.x, y: pos.y - 1 }
+  ]
+};
 
-  orientationUp: (pos: Pos): Pos[] => {
-    return [
-      { x: pos.x, y: pos.y },
-      { x: pos.x - 1, y: pos.y },
-      { x: pos.x + 1, y: pos.y },
-      { x: pos.x, y: pos.y - 1 }
-    ];
-  },
-
-  orientationDown: (pos: Pos): Pos[] => {
-    return [
-      { x: pos.x, y: pos.y },
-      { x: pos.x - 1, y: pos.y },
-      { x: pos.x + 1, y: pos.y },
-      { x: pos.x, y: pos.y + 1 }
-    ];
-  },
-
-  orientationRight: (pos: Pos): Pos[] => {
-    return [
-      { x: pos.x, y: pos.y },
-      { x: pos.x, y: pos.y - 1 },
-      { x: pos.x, y: pos.y + 1 },
-      { x: pos.x + 1, y: pos.y }
-    ];
-  },
-
-  orientationLeft: (pos: Pos): Pos[] => {
-    return [
-      { x: pos.x, y: pos.y },
-      { x: pos.x, y: pos.y - 1 },
-      { x: pos.x, y: pos.y + 1 },
-      { x: pos.x - 1, y: pos.y }
-    ];
-  }
+export const TetrominoI: Tetromino = {
+  shape: Shape.I, 
+  cells: (pos: Pos) => [
+    { x: pos.x, y: pos.y },
+    { x: pos.x - 1, y: pos.y },
+    { x: pos.x + 1, y: pos.y },
+    { x: pos.x + 2, y: pos.y }
+  ]
 };

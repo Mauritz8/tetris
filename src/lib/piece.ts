@@ -1,73 +1,43 @@
 import type { Tetromino } from "./tetromino";
-import { Shape, TetrominoT } from "./tetromino";
+import { Shape, getTetromino } from "./tetromino";
 
 export type Pos = { x: number, y: number };
 export enum Orientation { UP, DOWN, RIGHT, LEFT };
 export type Piece = {
   pos: Pos;
-  orientation: Orientation;
   tetromino: Tetromino;
   cells: Pos[];
 };
 
-export function createPiece(pos: Pos, orientation: Orientation, shape: Shape): Piece {
-    let tetromino: Tetromino;
-    switch (shape) {
-      case Shape.T:
-        tetromino = TetrominoT;
-    }
-
-    let cells: Pos[]; 
-    switch (orientation) {
-      case Orientation.UP:
-        cells = tetromino.orientationUp(pos);
-        break;
-      case Orientation.DOWN:
-        cells = tetromino.orientationDown(pos);
-        break;
-      case Orientation.RIGHT:
-        cells = tetromino.orientationRight(pos);
-        break;
-      case Orientation.LEFT:
-        cells = tetromino.orientationLeft(pos);
-        break;
-    }
-
+export function createPiece(pos: Pos, shape: Shape): Piece {
+    const tetromino = getTetromino(shape);
     return {
       pos: pos,
-      orientation: orientation,
       tetromino: tetromino,
-      cells: cells
+      cells: tetromino.cells(pos)
     };
 }
 
 export function rotate(p: Piece): Piece {
-  switch (p.orientation) {
-    case Orientation.UP:
-      return {
-        ...p,
-        orientation: Orientation.RIGHT,
-        cells: p.tetromino.orientationRight(p.pos)
-      };
-    case Orientation.RIGHT:
-      return {
-        ...p,
-        orientation: Orientation.DOWN,
-        cells: p.tetromino.orientationDown(p.pos)
-      };
-    case Orientation.DOWN:
-      return {
-        ...p,
-        orientation: Orientation.LEFT,
-        cells: p.tetromino.orientationLeft(p.pos)
-      };
-    case Orientation.LEFT:
-      return {
-        ...p,
-        orientation: Orientation.UP,
-        cells: p.tetromino.orientationUp(p.pos)
-      };
-  }
+  const cells = p.cells.map(cell => {
+    const xDiff = cell.x - p.pos.x;
+    const yDiff = cell.y - p.pos.y;
+    if (xDiff === 0 && yDiff === 0) {
+      return cell;
+    } else if (xDiff < 0 && yDiff === 0) {
+      return { x: p.pos.x + yDiff, y: p.pos.y + xDiff };
+    } else if (xDiff === 0 && yDiff < 0) {
+      return { x: p.pos.x - yDiff, y: p.pos.y + xDiff };
+    } else if (xDiff > 0 && yDiff === 0) {
+      return { x: p.pos.x + yDiff, y: p.pos.y + xDiff };
+    } else if (xDiff === 0 && yDiff > 0) {
+      return { x: p.pos.x - yDiff, y: p.pos.y + xDiff };
+    } else {
+      return cell;
+    }
+  });
+
+  return { ...p, cells: cells };
 }
 
 function moveBy(p: Piece, x: number, y: number): Piece {
