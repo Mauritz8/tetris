@@ -24,6 +24,18 @@ export function init(): GameState {
   return { rows: rows, cols: cols, grid: grid, piece: piece };
 }
 
+export function clearCompleteRows(gs: GameState): void {
+  for (let i = 0; i < gs.rows; i++) {
+    const isComplete = gs.grid[i].findIndex(cell => cell === null) === -1;
+    if (isComplete) {
+      for (let j = i; j > 0; j--) {
+        gs.grid[j] = gs.grid[j - 1];
+      }
+      gs.grid[0] = Array<null>(gs.cols).fill(null);
+    }
+  }
+}
+
 export const isPieceDone = (gs: GameState, p: Piece) =>
 		isAtBottom(gs, p) || isCollision(gs, p);
 

@@ -1,5 +1,6 @@
 <script>
-  import { init, getNewPiece, isPieceDone, isSpawnOnPiece, isOutsideHoriz } from "$lib/index.ts";
+  import { init, getNewPiece, isPieceDone, isSpawnOnPiece, isOutsideHoriz,
+  clearCompleteRows } from "$lib/index.ts";
   import { rotate, moveRight, moveLeft, moveDown } from "$lib/piece.ts";
   import { Shape } from "$lib/tetromino.ts";
 
@@ -18,12 +19,17 @@
 			});
 		}
 
+    if (pieceDone) {
+      clearCompleteRows(game);
+    }
+
     const newPiece = pieceDone ? getNewPiece(game.cols) : piece;
     const isLost = pieceDone && isSpawnOnPiece(game, newPiece);
     newPiece.cells.forEach(pos => {
       game.grid[pos.y][pos.x] = newPiece.tetromino.shape;
     });
     game.piece = newPiece;
+
 
     if (isLost) {
       isPlaying = false;
