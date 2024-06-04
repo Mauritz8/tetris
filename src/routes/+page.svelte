@@ -1,6 +1,7 @@
 <script>
   import { init, updatePiece } from "$lib/index.ts";
   import { rotate, moveRight, moveLeft, moveDown } from "$lib/piece.ts";
+  import { Shape } from "$lib/tetromino.ts";
 
   let started = false;
   let game = init();
@@ -44,7 +45,14 @@
       <div>
       {#each row as cell}
         <div class="inline-block h-10 w-10 ring-1 ring-white
-            {cell === null ? 'bg-black' : 'bg-purple-500'}">
+            {cell === Shape.T ? 'bg-purple-500' 
+            : cell === Shape.I ? 'bg-cyan-400'
+            : cell === Shape.O ? 'bg-yellow-400'
+            : cell === Shape.J ? 'bg-blue-500'
+            : cell === Shape.L ? 'bg-orange-500'
+            : cell === Shape.S ? 'bg-green-500'
+            : cell === Shape.Z ? 'bg-red-500'
+            : 'bg-black'}">
           &nbsp;
         </div>
       {/each}
