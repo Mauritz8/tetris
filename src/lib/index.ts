@@ -1,6 +1,6 @@
 import { createPiece } from "$lib/piece";
 import type { Piece, Pos } from "$lib/piece";
-import { Shape } from "$lib/tetromino";
+import { Shape, randomShape } from "$lib/tetromino";
 
 type GameState = {
   rows: number,
@@ -16,7 +16,7 @@ export function init(): GameState {
   for (let i = 0; i < rows; i++) {
     grid[i] = Array<null>(cols).fill(null);
   }
-  const piece = createPiece({ x: cols / 2 - 1, y: 2 }, Shape.Z) 
+  const piece = getNewPiece(cols);
   piece.cells.forEach(pos => {
     grid[pos.y][pos.x] = piece.tetromino.shape;
   });
@@ -28,7 +28,7 @@ export function updatePiece(gameState: GameState, piece: Piece): void {
   if (isOutsideHoriz(gameState, piece)) return;
 
   if (isAtBottom(gameState, piece) || isCollision(gameState, piece)) {
-    const newPiece = createPiece({ x: 4, y: 3 }, Shape.T) 
+    const newPiece = getNewPiece(gameState.cols);
     newPiece.cells.forEach(pos => {
       gameState.grid[pos.y][pos.x] = newPiece.tetromino.shape;
     });
@@ -46,6 +46,10 @@ export function updatePiece(gameState: GameState, piece: Piece): void {
   });
 
   gameState.piece = piece;
+}
+
+function getNewPiece(cols: number): Piece {
+  return createPiece({ x: cols / 2 - 1, y: 2 }, randomShape()) 
 }
 
 const isOutsideHoriz = (gs: GameState, p: Piece) => 
