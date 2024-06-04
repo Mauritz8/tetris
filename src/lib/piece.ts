@@ -19,25 +19,24 @@ export function createPiece(pos: Pos, shape: Shape): Piece {
 }
 
 export function rotate(p: Piece): Piece {
-  const cells = p.cells.map(cell => {
-    const xDiff = cell.x - p.pos.x;
-    const yDiff = cell.y - p.pos.y;
-    if (xDiff === 0 && yDiff === 0) {
-      return cell;
-    } else if (xDiff < 0 && yDiff === 0) {
-      return { x: p.pos.x + yDiff, y: p.pos.y + xDiff };
-    } else if (xDiff === 0 && yDiff < 0) {
-      return { x: p.pos.x - yDiff, y: p.pos.y + xDiff };
-    } else if (xDiff > 0 && yDiff === 0) {
-      return { x: p.pos.x + yDiff, y: p.pos.y + xDiff };
-    } else if (xDiff === 0 && yDiff > 0) {
-      return { x: p.pos.x - yDiff, y: p.pos.y + xDiff };
-    } else {
-      return cell;
-    }
-  });
-
+  const cells = p.cells.map(cell => rotatePoint(p.pos, cell));
   return { ...p, cells: cells };
+}
+
+function rotatePoint(center: Pos, point: Pos): Pos {
+	const xDiff = point.x - center.x;
+	const yDiff = point.y - center.y;
+	if ( (xDiff > 0 && yDiff < 0) || (xDiff < 0 && yDiff > 0) ) {
+		return { x: point.x, y: center.y - yDiff };
+	} else if ( (xDiff < 0 && yDiff < 0) || (xDiff > 0 && yDiff > 0) ) {
+		return { x: center.x - xDiff, y: point.y };
+	} else if (xDiff === 0 && yDiff !== 0) {
+		return { x: center.x - yDiff, y: center.y }; 
+	} else if (yDiff === 0 && xDiff !== 0) {
+		return { x: center.x, y: center.y + xDiff }; 
+	} else {
+		return point;
+	}
 }
 
 function moveBy(p: Piece, x: number, y: number): Piece {

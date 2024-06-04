@@ -39,10 +39,10 @@ export const TetrominoT: Tetromino = {
 export const TetrominoI: Tetromino = {
   shape: Shape.I, 
   cells: (pos: Pos) => [
-    { x: pos.x, y: pos.y },
-    { x: pos.x - 1, y: pos.y },
-    { x: pos.x + 1, y: pos.y },
-    { x: pos.x + 2, y: pos.y }
+		{ x: pos.x, y: pos.y },
+		{ x: pos.x - 1, y: pos.y },
+		{ x: pos.x - 2, y: pos.y },
+		{ x: pos.x + 1, y: pos.y }
   ]
 };
 
