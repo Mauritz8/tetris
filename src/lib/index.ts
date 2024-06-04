@@ -24,45 +24,26 @@ export function init(): GameState {
   return { rows: rows, cols: cols, grid: grid, piece: piece };
 }
 
-export function updatePiece(gameState: GameState, piece: Piece): void {
-  if (isOutsideHoriz(gameState, piece)) return;
+export const isPieceDone = (gs: GameState, p: Piece) =>
+		isAtBottom(gs, p) || isCollision(gs, p);
 
-  if (isAtBottom(gameState, piece) || isCollision(gameState, piece)) {
-    const newPiece = getNewPiece(gameState.cols);
-    newPiece.cells.forEach(pos => {
-      gameState.grid[pos.y][pos.x] = newPiece.tetromino.shape;
-    });
-    gameState.piece = newPiece;
-    return;
-  }
+export const getNewPiece = (cols: number) =>
+		createPiece({ x: cols / 2 - 1, y: 2 }, randomShape());
 
-
-  gameState.piece.cells.forEach(pos => {
-    gameState.grid[pos.y][pos.x] = null;
-  });
-
-  piece.cells.forEach(pos => {
-    gameState.grid[pos.y][pos.x] = piece.tetromino.shape;
-  });
-
-  gameState.piece = piece;
-}
-
-function getNewPiece(cols: number): Piece {
-  return createPiece({ x: cols / 2 - 1, y: 2 }, randomShape()) 
-}
-
-const isOutsideHoriz = (gs: GameState, p: Piece) => 
+export const isOutsideHoriz = (gs: GameState, p: Piece) => 
     p.cells.findIndex(pos => pos.x < 0 || pos.x >= gs.cols) !== -1
+
+export const isSpawnOnPiece = (gs: GameState, p: Piece) =>
+  p.cells.findIndex(cell => gs.grid[cell.y][cell.x] !== null) !== -1;
 
 const isAtBottom = (gs: GameState, p: Piece) =>
     p.cells.findIndex(pos => pos.y >= gs.rows) !== -1
 
 const isCollision = (gs: GameState, p: Piece) => {
-  const collision = (cell: (Shape | null), pos: Pos) => {
-    return cell !== null && 
-        !gs.piece.cells.find(c => c.x === pos.x && c.y === pos.y)
-  }
+  const cellInCurrentPiece = (cell: Pos) => gs.piece.cells
+      .findIndex(pos => pos.x === cell.x && pos.y === cell.y) !== -1;
+  const cellCollision = (cell: Pos) =>
+      gs.grid[cell.y][cell.x] !== null && !cellInCurrentPiece(cell);
 
-  return p.cells.findIndex(pos => collision(gs.grid[pos.y][pos.x], pos)) !== -1
+  return p.cells.findIndex(cellCollision) !== -1;
 }

@@ -26,9 +26,7 @@ export function getTetromino(shape: Shape): Tetromino {
   }
 }
 
-export function randomShape(): Shape {
-	return Math.floor(Math.random() * 7);	
-}
+export const randomShape = () => Math.floor(Math.random() * 7);
 
 export const TetrominoT: Tetromino = {
   shape: Shape.T, 

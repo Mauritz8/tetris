@@ -1,39 +1,66 @@
 <script>
-  import { init, updatePiece } from "$lib/index.ts";
+  import { init, getNewPiece, isPieceDone, isSpawnOnPiece, isOutsideHoriz } from "$lib/index.ts";
   import { rotate, moveRight, moveLeft, moveDown } from "$lib/piece.ts";
   import { Shape } from "$lib/tetromino.ts";
 
-  let started = false;
+  let isPlaying = false;
   let game = init();
+	let frameStepperId;
+
+
+	async function nextFrame(piece) {
+  	if (isOutsideHoriz(game, piece)) return;
+
+    const pieceDone = isPieceDone(game, piece);
+		if (!pieceDone) {
+			game.piece.cells.forEach(pos => {
+				game.grid[pos.y][pos.x] = null;
+			});
+		}
+
+    const newPiece = pieceDone ? getNewPiece(game.cols) : piece;
+    const isLost = pieceDone && isSpawnOnPiece(game, newPiece);
+    newPiece.cells.forEach(pos => {
+      game.grid[pos.y][pos.x] = newPiece.tetromino.shape;
+    });
+    game.piece = newPiece;
+
+    if (isLost) {
+      isPlaying = false;
+      clearInterval(frameStepperId);
+      await new Promise(r => setTimeout(r, 500));
+      alert("You lost :(");
+    }
+	}
 
   function onKeyDown(e) {
-    if (!started) return;
-    let f;
+    if (!isPlaying) return;
+
+		let piece;
     switch (e.key) {
       case "ArrowUp":
-        f = rotate(game.piece);
-        break;
+        piece = rotate(game.piece);
+				break;
       case "ArrowRight":
-        f = moveRight(game.piece);
-        break;
+        piece = moveRight(game.piece);
+				break;
       case "ArrowLeft":
-        f = moveLeft(game.piece);
-        break;
+        piece = moveLeft(game.piece);
+				break;
       case "ArrowDown":
-        f = moveDown(game.piece);
-        break;
-      default:
+        piece = moveDown(game.piece);
+				break;
+      default: 
         return;
     }
-    updatePiece(game, f);
-    game = game;
-  }
+		nextFrame(piece);
+	}
 
   function startGame() {
-    started = true;
-    setInterval(() => {
-      updatePiece(game, moveDown(game.piece));
-      game = game;
+    isPlaying = true;
+    frameStepperId = setInterval(() => {
+			const piece = moveDown(game.piece);
+			nextFrame(piece)
     }, 500);
   }
 </script>
@@ -45,7 +72,7 @@
       <div>
       {#each row as cell}
         <div class="inline-block h-10 w-10 ring-1 ring-white
-            {cell === Shape.T ? 'bg-purple-500' 
+            { cell === Shape.T ? 'bg-purple-500' 
             : cell === Shape.I ? 'bg-cyan-400'
             : cell === Shape.O ? 'bg-yellow-400'
             : cell === Shape.J ? 'bg-blue-500'
