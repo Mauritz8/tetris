@@ -71,7 +71,7 @@
     {#each game.grid as row}
       <div>
       {#each row as cell}
-        <div class="inline-block h-10 w-10 ring-1 ring-white
+        <div class="inline-block h-8 w-8 ring-1 ring-white
             { cell === Shape.T ? 'bg-purple-500' 
             : cell === Shape.I ? 'bg-cyan-400'
             : cell === Shape.O ? 'bg-yellow-400'

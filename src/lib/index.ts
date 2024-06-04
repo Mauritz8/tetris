@@ -10,8 +10,8 @@ type GameState = {
 };
 
 export function init(): GameState {
-  const rows = 16;
-  const cols = 16;
+  const rows = 20;
+  const cols = 10;
   const grid = Array<Array<Shape | null>>(rows);
   for (let i = 0; i < rows; i++) {
     grid[i] = Array<null>(cols).fill(null);
